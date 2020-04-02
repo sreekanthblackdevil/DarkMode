@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".BaseActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Dark Mode"
+            android:textColor="#B2FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:elevation="5dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/radio_flat_selector_day"
+                    android:button="@android:color/transparent"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:paddingStart="30dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="30dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/day_mode"
+                    android:textColor="@color/radio_flat_selector" />
+
+                <!--            <RadioButton-->
+                <!--                android:id="@+id/radioNight"-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:background="@drawable/radio_flat_selector_night"-->
+                <!--                android:button="@android:color/transparent"-->
+                <!--                android:gravity="center"-->
+                <!--                android:paddingStart="22dp"-->
+                <!--                android:paddingTop="12dp"-->
+                <!--                android:paddingEnd="22dp"-->
+                <!--                android:paddingBottom="12dp"-->
+                <!--                android:text="@string/night_mode"-->
+                <!--                android:textColor="@color/radio_flat_selector" />-->
+
+                <RadioButton
+                    android:id="@+id/radioNight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/radio_flat_selector_auto"
+                    android:button="@android:color/transparent"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:paddingStart="30dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="30dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/night_mode"
+                    android:textColor="@color/radio_flat_selector" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/info_oems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sideMargin"
+                android:layout_marginTop="@dimen/textTopMargin"
+                android:layout_marginEnd="@dimen/sideMargin"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/info_oems" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sideMargin"
+                android:layout_marginTop="@dimen/textTopMargin"
+                android:layout_marginEnd="@dimen/sideMargin"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/info_devs"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info_oems" />
+
+            <TextView
+                android:id="@+id/warn_carmode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sideMargin"
+                android:layout_marginTop="@dimen/textTopMargin"
+                android:layout_marginEnd="@dimen/sideMargin"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/warn_carmode"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/warn_disable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sideMargin"
+                android:layout_marginTop="@dimen/textTopMargin"
+                android:layout_marginEnd="@dimen/sideMargin"
+                android:layout_marginBottom="@dimen/separatorTopMargin"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/warn_disable"
+                android:textColor="@color/colorAccent" />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:src="@drawable/banner" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
