@@ -6,15 +6,20 @@
     <string name="day_mode">Light Mode</string>
 
     <!-- Info/Warn strings -->
-    <string name="info_oems">Note: some device manufacturers disabled the ability to enable dark
+    <string name="info_o_e_m_s">Note: some device manufacturers disabled the ability to enable dark
         mode in their versions of Android, or provide their own toggle</string>
-    <string name="info_devs">Note: only apps that have been updated by their developers to add a
+    <string name="info_d_e_v_s">Note: only apps that have been updated by their developers to add a
         dark theme and follow the system setting will become dark</string>
-    <string name="warn_carmode">Warning: on this version of Android, car mode must be enabled in
+    <string name="warn_car_mode">Warning: on this version of Android, car mode must be enabled in
         order to activate dark mode. This may cause unintended behavioral changes and a persistent
         notification icon to appear</string>
     <string name="warn_disable">Warning: ensure dark mode is disabled before uninstalling this app
         or upgrading to a new version of Android</string>
+    <string name="rate">You are enjoying our app did this app work well for you then share you experience with us.</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="msg_android_version_compatible">Your version of Android already includes built-in support for dark mode and prevents apps from changing the setting</string>
+    <string name="alert_title">Incompatible Android Version</string>
+    <string name="close">Close</string>
 
     <!-- "Android Too New" dialog -->
 </resources>
