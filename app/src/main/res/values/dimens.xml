@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="sideMargin">16dp</dimen>
-    <dimen name="separatorTopMargin">60dp</dimen>
     <dimen name="textTopMargin">16dp</dimen>
     <dimen name="radio_corner">10dp</dimen>
-    <dimen name="radio_stroke_width">1dp</dimen>
+    <dimen name="radio_stroke_width">2dp</dimen>
 </resources>

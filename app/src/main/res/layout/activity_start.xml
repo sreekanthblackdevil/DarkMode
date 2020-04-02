@@ -20,9 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
         android:fontFamily="@font/roboto_regular"
-        android:textColor="#fff"
+        android:textColor="#80FFFFFF"
         android:text="By NightCoder"
         tools:ignore="HardcodedText" />
 

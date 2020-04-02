@@ -7,9 +7,12 @@
 
     //Test Ads
     <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="native_id">ca-app-pub-3940256099942544/2247696110</string>
     <string name="interstitial">ca-app-pub-3940256099942544/1033173712</string>
     //genuine Ads
-
+    <!--    <string name="app_id">ca-app-pub-4380652956129533~1686530039</string>-->
+    <!--    <string name="native_id">ca-app-pub-4380652956129533/1251964506</string>-->
+    <!--    <string name="interstitial">ca-app-pub-4380652956129533/9041441724</string>-->
     <string name="info_o_e_m_s">Note: some device manufacturers disabled the ability to enable dark
         mode in their versions of Android, or provide their own toggle</string>
     <string name="info_d_e_v_s">Note: only apps that have been updated by their developers to add a
@@ -24,6 +27,8 @@
     <string name="uninstall">Uninstall</string>
     <string name="msg_android_version_compatible">Your version of Android already
         includes built-in support for dark mode and prevents apps from changing the setting</string>
+    <string name="msg_android_version_compatible_short">Your Device does not support this feature. Your version of Android already
+        includes built-in support for dark mode. Tap for more information</string>
     <string name="alert_title">Incompatible Android Version</string>
     <string name="close">Close</string>
 </resources>

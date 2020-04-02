@@ -27,7 +27,6 @@
                 app:titleEnabled="false">
 
                 <LinearLayout
-                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?android:actionBarSize"
                     android:layout_marginTop="50dp"
@@ -84,12 +83,12 @@
                     android:id="@+id/radioDay"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
-                    android:layout_marginEnd="-1dp"
+                    android:layout_marginEnd="-2dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/radio_flat_selector_day"
                     android:button="@android:color/transparent"
-                    android:elevation="10dp"
+                    android:elevation="15dp"
                     android:gravity="center"
                     android:paddingStart="22dp"
                     android:paddingTop="12dp"
@@ -103,10 +102,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/radio_flat_selector_night"
                     android:button="@android:color/transparent"
-                    android:elevation="10dp"
+                    android:elevation="15dp"
                     android:gravity="center"
                     android:paddingStart="22dp"
                     android:paddingTop="12dp"
@@ -119,12 +118,12 @@
                     android:id="@+id/radioAuto"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
-                    android:layout_marginStart="-1dp"
+                    android:layout_marginStart="-2dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/radio_flat_selector_auto"
                     android:button="@android:color/transparent"
-                    android:elevation="10dp"
+                    android:elevation="15dp"
                     android:gravity="center"
                     android:paddingStart="22dp"
                     android:paddingTop="12dp"
@@ -134,6 +133,17 @@
                     android:textColor="@color/radio_flat_selector" />
 
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/info_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/sideMargin"
+                android:layout_marginTop="@dimen/textTopMargin"
+                android:layout_marginEnd="@dimen/sideMargin"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/msg_android_version_compatible_short"
+                android:textColor="#BE2421" />
 
             <TextView
                 android:id="@+id/info_oems"
@@ -188,45 +198,24 @@
                 android:background="@android:color/transparent" />
 
             <LinearLayout
+                android:id="@+id/share"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:background="@drawable/rate_button_background"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/share_button_background"
                 android:gravity="center"
+                android:elevation="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:padding="5dp"
-                    android:src="@mipmap/star"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rate Us"
-                    android:textColor="@color/white"
-                    android:textSize="17sp"
-                    tools:ignore="HardcodedText" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:background="@drawable/rate_button_background"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:src="@mipmap/team"
                     tools:ignore="ContentDescription" />
 
@@ -234,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Share with your friends"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto_regular"
                     android:textSize="17sp"
                     tools:ignore="HardcodedText" />
             </LinearLayout>

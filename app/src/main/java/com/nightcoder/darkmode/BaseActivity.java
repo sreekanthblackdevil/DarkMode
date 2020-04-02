@@ -12,7 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -42,18 +44,18 @@ import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 
 public class BaseActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
-    private static final String ADMOB_AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110";
     private RadioGroup radioGroup;
     private UiModeManager uiModeManager;
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private InterstitialAd interstitialAd;
-
     private UnifiedNativeAd nativeAd;
 
     @Override
@@ -83,46 +85,52 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
             findViewById(R.id.warn_disable).setVisibility(View.GONE);
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            new AlertDialog.Builder(this)
-//                    .setIcon(R.drawable.ic_warning_black_24dp)
-//                    .setTitle(R.string.alert_title)
-//                    .setMessage(R.string.msg_android_version_compatible)
-//                    .setCancelable(false)
-//                    .setNegativeButton(getString(R.string.close), ((dialog, which) -> super.onBackPressed()))
-//                    .setPositiveButton(R.string.uninstall, (dialog, which) -> {
-//                        Intent i = new Intent();
-//                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                        i.setData(Uri.fromParts("package",
-//                                BaseActivity.this.getPackageName(), null));
-//                        startActivity(i);
-//                        BaseActivity.this.finish();
-//                    })
-//                    .show();
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            TextView error = findViewById(R.id.info_error);
+            error.setOnClickListener(v -> new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.ic_warning_black_24dp)
+                    .setTitle(R.string.alert_title)
+                    .setMessage(R.string.msg_android_version_compatible)
+                    .setNegativeButton(getString(R.string.close), ((dialog, which) -> super.onBackPressed()))
+                    .setPositiveButton(R.string.uninstall, (dialog, which) -> {
+                        Intent i = new Intent();
+                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.setData(Uri.fromParts("package",
+                                BaseActivity.this.getPackageName(), null));
+                        startActivity(i);
+                        BaseActivity.this.finish();
+                    })
+                    .show());
+
+            LinearLayout share = findViewById(R.id.share);
+            share.setOnClickListener(v -> {
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Dark Mode");
+                    String shareMessage= "\n\n*Introducing Dark Mode to everyone.*\n " +
+                            "Change Majority of your Apps to Dark Mode\n" +
+                            "If your mobile has built-in dark mode support then share to your friends let them enjoy dark mode\n" +
+                            "App Available in Play Store\n\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" +
+                            BuildConfig.APPLICATION_ID +"\n\n";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(Intent.createChooser(shareIntent, "Share to"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+            });
+
+        }
 
         sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        loadAds();
-        refreshAd();
-    }
-
-    private void loadAds() {
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getResources().getString(R.string.interstitial));
         interstitialAd.loadAd(new AdRequest.Builder().build());
-    }
+        refreshAd();
 
-    private void loadInterstitial() {
-        if (interstitialAd.isLoaded()) {
-            interstitialAd.show();
-        } else if (!interstitialAd.isLoading()) {
-            int random = ThreadLocalRandom.current().nextInt(0, 3);
-            Log.d("Random", random + " number");
-            if (random == 1) {
-                interstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-        }
-
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::refreshAd, 60, 60, TimeUnit.SECONDS);
     }
 
     @SuppressLint("SetTextI18n")
@@ -205,7 +213,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         // Get the video controller for the ad. One will always be provided, even if the ad doesn't
         // have a video asset.
-        VideoController vc = nativeAd.getVideoController();
+        @SuppressWarnings("deprecation") VideoController vc = nativeAd.getVideoController();
 
         // Updates the UI to say whether or not this ad has a video asset.
         if (vc.hasVideoContent()) {
@@ -224,7 +232,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
     private void refreshAd() {
-        AdLoader.Builder builder = new AdLoader.Builder(this, ADMOB_AD_UNIT_ID);
+        AdLoader.Builder builder = new AdLoader.Builder(this, getResources().getString(R.string.native_id));
 
         // OnUnifiedNativeAdLoadedListener implementation.
         builder.forUnifiedNativeAd(unifiedNativeAd -> {
@@ -254,13 +262,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         builder.withNativeAdOptions(adOptions);
 
-        AdLoader adLoader = builder.withAdListener(new AdListener() {
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(BaseActivity.this, "Failed to load native ad: "
-                        + errorCode, Toast.LENGTH_SHORT).show();
-            }
-        }).build();
+        AdLoader adLoader = builder.build();
 
         adLoader.loadAd(new AdRequest.Builder().build());
     }
@@ -294,9 +296,12 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     @Override
     public void onBackPressed() {
-        if (sharedPreferences.getBoolean("rate", false)) {
+        int random = ThreadLocalRandom.current().nextInt(0, 3);
+        if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        } else if (sharedPreferences.getBoolean("rate", false)) {
             super.onBackPressed();
-        } else {
+        } else if (random == 1){
             Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.rate_dialog);
             Window window = dialog.getWindow();
@@ -313,12 +318,14 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
                 rating();
                 dialog.cancel();
             });
-            ratingBar.setOnClickListener(v -> {
+
+            ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
                 rating();
                 dialog.cancel();
             });
-
             dialog.show();
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -328,6 +335,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        SharedPreferences.Editor editor;
         try {
             startActivity(goToMarket);
             editor = sharedPreferences.edit();
@@ -349,19 +357,16 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
                 uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                     uiModeManager.disableCarMode(0);
-                loadInterstitial();
                 break;
             case R.id.radioNight:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                     uiModeManager.enableCarMode(0);
                 uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-                loadInterstitial();
                 break;
             case R.id.radioAuto:
                 uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_AUTO);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                     uiModeManager.disableCarMode(0);
-                loadInterstitial();
                 break;
         }
     }
