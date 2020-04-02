@@ -267,9 +267,8 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     @Override
     protected void onDestroy() {
-        if (nativeAd != null) {
+        if (nativeAd != null)
             nativeAd.destroy();
-        }
         super.onDestroy();
     }
 
