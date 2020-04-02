@@ -19,13 +19,17 @@
         android:textStyle="bold"
         tools:ignore="HardcodedText" />
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:src="@mipmap/star"
-        tools:ignore="ContentDescription" />
+        android:layout_marginStart="20dp"
+        android:progressTint="#FFB300"
+        android:layout_marginEnd="20dp"
+        android:numStars="5"
+        android:stepSize="1" />
 
     <TextView
         android:layout_width="wrap_content"
