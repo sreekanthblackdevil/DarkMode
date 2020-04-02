@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class QuickTileServices extends TileService {
-    private static final String TAG = "DarkModeQuickTile";
-
     @Override
     public void onClick() {
         super.onClick();
@@ -34,14 +31,11 @@ public class QuickTileServices extends TileService {
     @Override
     public void onStartListening() {
         super.onStartListening();
-        if (BuildConfig.DEBUG) Log.d(TAG, "onStartListening");
         syncTile();
     }
 
     private boolean isNightModeOn(UiModeManager uiModeManager) {
-        final boolean isNightMode = uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES;
-        if (BuildConfig.DEBUG) Log.d(TAG, "isNightModeOn " + isNightMode);
-        return isNightMode;
+        return uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES;
     }
 
     private void toggleSetting() {
@@ -50,11 +44,9 @@ public class QuickTileServices extends TileService {
         if (isNightModeOn(uiModeManager)) {
             //switch off the night mode
             uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
-            if (BuildConfig.DEBUG) Log.d(TAG, "toggleSetting set nightMode = off");
         } else {
             // enable night mode
             uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-            if (BuildConfig.DEBUG) Log.d(TAG, "toggleSetting set nightMode = on");
         }
     }
 
@@ -64,7 +56,6 @@ public class QuickTileServices extends TileService {
         assert uiModeManager != null;
         tile.setState(isNightModeOn(uiModeManager) ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
         tile.updateTile();
-        if (BuildConfig.DEBUG) Log.d(TAG, "syncTile");
     }
 
 
