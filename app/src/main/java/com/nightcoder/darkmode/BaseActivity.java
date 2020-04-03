@@ -85,6 +85,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             TextView error = findViewById(R.id.info_error);
+            error.setVisibility(View.VISIBLE);
             error.setOnClickListener(v -> new AlertDialog.Builder(this)
                     .setIcon(R.drawable.ic_warning_black_24dp)
                     .setTitle(R.string.alert_title)
