@@ -109,7 +109,8 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Dark Mode");
                     String shareMessage= "\n\n*Introducing Dark Mode to everyone.*\n " +
                             "Change Majority of your Apps to Dark Mode\n" +
-                            "If your mobile has built-in dark mode support then share to your friends let them enjoy dark mode\n" +
+                            "If your mobile has built-in dark mode support then share to your " +
+                            "friends let them enjoy dark mode\n" +
                             "App Available in Play Store\n\n";
                     shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" +
                             BuildConfig.APPLICATION_ID +"\n\n";

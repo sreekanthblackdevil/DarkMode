@@ -195,8 +195,9 @@
                 android:id="@+id/fl_adplaceholder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/ad_background"
                 android:layout_margin="16dp"
-                android:background="@android:color/transparent" />
+                android:elevation="8dp" />
 
             <LinearLayout
                 android:id="@+id/share"
