@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0D8640</color>
-    <color name="colorPrimaryDark">#5F5F5F</color>
-    <color name="colorAccent">#C62828</color>
-    <color name="stroke_radio_regular">#1E88E5</color>
-    <color name="radio_regular_bg">#FFFFFF</color>
-    <color name="radio_select">#1E88E5</color>
+    <color name="stroke_radio_regular">#FFFFFF</color>
+    <color name="radio_regular_bg">@android:color/transparent</color>
+    <color name="radio_select">#FFFFFF</color>
     <color name="white">#fff</color>
-    <color name="background">#fff</color>
-    <color name="radio_text_color">#000000</color>
 </resources>

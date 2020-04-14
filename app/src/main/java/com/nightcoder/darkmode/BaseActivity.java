@@ -13,12 +13,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -35,6 +37,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.formats.MediaView;
@@ -63,6 +66,10 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         uiModeManager = ContextCompat.getSystemService(this, UiModeManager.class);
         radioGroup = findViewById(R.id.radioGroup);
+
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
         RelativeLayout container = findViewById(R.id.container);
         container.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -102,36 +109,50 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
                     .show());
 
             LinearLayout share = findViewById(R.id.share);
-            share.setOnClickListener(v -> {
-                try {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Dark Mode");
-                    String shareMessage= "\n\n*Introducing Dark Mode to everyone.*\n " +
-                            "Change Majority of your Apps to Dark Mode\n" +
-                            "If your mobile has built-in dark mode support then share to your " +
-                            "friends let them enjoy dark mode\n" +
-                            "App Available in Play Store\n\n";
-                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" +
-                            BuildConfig.APPLICATION_ID +"\n\n";
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-                    startActivity(Intent.createChooser(shareIntent, "Share to"));
-                } catch(Exception e) {
-                    //e.toString();
-                }
-            });
+            ImageButton shareBtn = findViewById(R.id.share_btn);
+            shareBtn.setOnClickListener(v -> shareApp());
+            share.setOnClickListener(v -> shareApp());
 
         }
 
         sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getResources().getString(R.string.interstitial));
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+        int random = ThreadLocalRandom.current().nextInt(0, 4);
+        if (random == 2)
+            interstitialAd.loadAd(new AdRequest.Builder().build());
         refreshAd();
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(this::refreshAd, 60, 60, TimeUnit.SECONDS);
     }
+
+    private void shareApp() {
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Dark Mode");
+            String shareMessage = "\n\n*Introducing Dark Mode to everyone.*\n " +
+                    "Change Majority of your Apps to Dark Mode\n" +
+                    "If your mobile has built-in dark mode support then share to your " +
+                    "friends let them enjoy dark mode\n" +
+                    "App Available in Play Store\n\n";
+            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" +
+                    BuildConfig.APPLICATION_ID + "\n\n";
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, "Share to"));
+        } catch (Exception e) {
+            //e.toString();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        interstitialAd.setAdListener(null);
+        Log.d("Status", "Paused");
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void populateUnifiedNativeAdView(UnifiedNativeAd nativeAd, UnifiedNativeAdView adView) {
@@ -234,16 +255,14 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
     private void refreshAd() {
         AdLoader.Builder builder = new AdLoader.Builder(this, getResources().getString(R.string.native_id));
 
-        // OnUnifiedNativeAdLoadedListener implementation.
         builder.forUnifiedNativeAd(unifiedNativeAd -> {
-            // You must call destroy on old ads when you are done with them,
-            // otherwise you will have a memory leak.
             if (nativeAd != null) {
                 nativeAd.destroy();
             }
             nativeAd = unifiedNativeAd;
             FrameLayout frameLayout =
                     findViewById(R.id.fl_adplaceholder);
+            frameLayout.setVisibility(View.VISIBLE);
             @SuppressLint("InflateParams")
             UnifiedNativeAdView adView = (UnifiedNativeAdView) getLayoutInflater()
                     .inflate(R.layout.ad_unified, null);
@@ -272,6 +291,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         if (nativeAd != null)
             nativeAd.destroy();
         super.onDestroy();
+        Log.d("Status", "Destroy");
     }
 
     private void updateRadioGroup() {
@@ -303,6 +323,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         } else if (random == 1){
             Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.rate_dialog);
+            dialog.setCancelable(false);
             Window window = dialog.getWindow();
             assert window != null;
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -358,6 +379,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
                     uiModeManager.disableCarMode(0);
                 break;
             case R.id.radioNight:
+
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
                     uiModeManager.enableCarMode(0);
                 uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);

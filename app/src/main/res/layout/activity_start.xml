@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container"
     android:background="@drawable/start_background"
-    tools:context=".StartActivity">
+    tools:context=".StartActivity"
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -16,16 +17,24 @@
         android:src="@mipmap/banner_icon"
         tools:ignore="ContentDescription" />
 
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:textSize="16sp"
         android:fontFamily="@font/roboto_regular"
-        android:textColor="#80FFFFFF"
         android:text="By NightCoder"
+        android:textColor="#80FFFFFF"
+        android:textSize="16sp"
         tools:ignore="HardcodedText" />
 
 </RelativeLayout>

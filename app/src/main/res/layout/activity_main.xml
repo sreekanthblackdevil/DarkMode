@@ -6,12 +6,14 @@
     android:id="@+id/container"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/background"
+    android:background="@drawable/base_background"
     android:orientation="vertical"
     tools:context=".BaseActivity">
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:id="@+id/coordinator"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -26,22 +28,32 @@
                 app:layout_scrollFlags="exitUntilCollapsed|scroll|snap"
                 app:titleEnabled="false">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="?android:actionBarSize"
                     android:layout_marginTop="50dp"
-                    android:elevation="5dp"
-                    android:gravity="center">
+                    android:elevation="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:padding="5dp"
+                        android:layout_centerInParent="true"
                         android:src="@drawable/dark_mode"
                         tools:ignore="ContentDescription" />
 
-                </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/share_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
+                        android:elevation="5dp"
+                        android:src="@drawable/ic_share_white_24dp" />
+
+                </RelativeLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -56,11 +68,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/cat"
+                android:tint="@color/white" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+                android:textColor="@color/white"
                 android:fontFamily="@font/roboto_regular"
                 android:text="Switch to Dark Mode"
                 android:textSize="17sp"
@@ -85,6 +107,7 @@
                     android:layout_height="45dp"
                     android:layout_marginEnd="-2dp"
                     android:layout_marginTop="10dp"
+                    android:textStyle="bold"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/radio_flat_selector_day"
                     android:button="@android:color/transparent"
@@ -109,6 +132,7 @@
                     android:gravity="center"
                     android:paddingStart="22dp"
                     android:paddingTop="12dp"
+                    android:textStyle="bold"
                     android:paddingEnd="22dp"
                     android:paddingBottom="12dp"
                     android:text="@string/night_mode"
@@ -120,6 +144,7 @@
                     android:layout_height="45dp"
                     android:layout_marginStart="-2dp"
                     android:layout_marginTop="10dp"
+                    android:textStyle="bold"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/radio_flat_selector_auto"
                     android:button="@android:color/transparent"
@@ -135,7 +160,7 @@
             </RadioGroup>
 
             <TextView
-                android:visibility="gone"
+                android:textColor="#FBC02D"
                 android:id="@+id/info_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,14 +168,16 @@
                 android:layout_marginTop="@dimen/textTopMargin"
                 android:layout_marginEnd="@dimen/sideMargin"
                 android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
                 android:text="@string/msg_android_version_compatible_short"
-                android:textColor="#BE2421" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/info_oems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/sideMargin"
+                android:textColor="@color/white"
                 android:layout_marginTop="@dimen/textTopMargin"
                 android:layout_marginEnd="@dimen/sideMargin"
                 android:fontFamily="@font/roboto_regular"
@@ -161,6 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/sideMargin"
                 android:layout_marginTop="@dimen/textTopMargin"
+                android:textColor="@color/white"
                 android:layout_marginEnd="@dimen/sideMargin"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/info_d_e_v_s"
@@ -177,7 +205,7 @@
                 android:layout_marginEnd="@dimen/sideMargin"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/warn_car_mode"
-                android:textColor="@color/colorAccent" />
+                android:textColor="#FFA000" />
 
             <TextView
                 android:id="@+id/warn_disable"
@@ -189,7 +217,7 @@
                 android:layout_marginBottom="@dimen/sideMargin"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/warn_disable"
-                android:textColor="@color/colorAccent" />
+                android:textColor="#8BFF90" />
 
             <FrameLayout
                 android:id="@+id/fl_adplaceholder"
@@ -197,6 +225,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ad_background"
                 android:layout_margin="16dp"
+                android:padding="5dp"
+                android:visibility="gone"
                 android:elevation="8dp" />
 
             <LinearLayout
@@ -218,12 +248,13 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:padding="10dp"
-                    android:src="@mipmap/team"
+                    android:src="@drawable/ic_share_white_24dp"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="Share with your friends"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="17sp"
@@ -232,4 +263,5 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </RelativeLayout>
