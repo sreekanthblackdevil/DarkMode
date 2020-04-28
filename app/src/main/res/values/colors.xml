@@ -4,4 +4,5 @@
     <color name="radio_regular_bg">@android:color/transparent</color>
     <color name="radio_select">#FFFFFF</color>
     <color name="white">#fff</color>
+    <color name="background">#293958</color>
 </resources>

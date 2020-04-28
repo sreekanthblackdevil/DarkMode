@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#192B34</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="colorAccent">#192B34</item>
+        <item name="colorAccent">#0288D1</item>
     </style>
 
     <style name="DialogAnimation">

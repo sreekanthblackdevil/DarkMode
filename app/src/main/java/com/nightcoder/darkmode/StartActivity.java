@@ -17,7 +17,7 @@ import com.google.android.gms.ads.MobileAds;
 
 public class StartActivity extends AppCompatActivity {
 
-    private InterstitialAd interstitialAd2;
+    private InterstitialAd interstitialAd;
     private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -38,10 +38,10 @@ public class StartActivity extends AppCompatActivity {
         MobileAds.initialize(this, initializationStatus -> {
         });
 
-        interstitialAd2 = new InterstitialAd(this);
-        interstitialAd2.setAdUnitId(getResources().getString(R.string.interstitial2));
-        interstitialAd2.loadAd(new AdRequest.Builder().build());
-        interstitialAd2.setAdListener(new AdListener() {
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getResources().getString(R.string.interstitial2));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.d("Status", "Failed to load");
@@ -52,7 +52,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                interstitialAd2.show();
+                interstitialAd.show();
+                handler.removeCallbacks(runnable);
             }
 
             @Override
@@ -62,16 +63,18 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        handler.postDelayed(() -> {
-            interstitialAd2.setAdListener(null);
-            loadComplete();
-            Log.d("Status", "TimeOut");
-        }, 150000);
+        handler.postDelayed(runnable, (1000 * 15));
     }
+
+    private Runnable runnable = () -> {
+        loadComplete();
+        Log.d("Status", "TimeOut");
+    };
 
     private void loadComplete() {
         startActivity(new Intent(this, BaseActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        handler.removeCallbacks(runnable);
     }
 
 }

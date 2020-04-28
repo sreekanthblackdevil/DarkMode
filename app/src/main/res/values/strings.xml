@@ -6,15 +6,15 @@
     <string name="day_mode">Light Mode</string>
 
     //Test Ads
-    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="native_id">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="interstitial">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="interstitial2">ca-app-pub-3940256099942544/1033173712</string>
+    <!--        <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>-->
+    <!--        <string name="native_id">ca-app-pub-3940256099942544/2247696110</string>-->
+    <!--        <string name="interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+    <!--        <string name="interstitial2">ca-app-pub-3940256099942544/1033173712</string>-->
     //genuine Ads
-    <!--    <string name="app_id">ca-app-pub-4380652956129533~1686530039</string>-->
-    <!--    <string name="native_id">ca-app-pub-4380652956129533/6442681623</string>-->
-    <!--    <string name="interstitial">ca-app-pub-4380652956129533/9041441724</string>-->
-    <!--    <string name="interstitial2">ca-app-pub-4380652956129533/9582994050</string>-->
+    <string name="app_id">ca-app-pub-4380652956129533~1686530039</string>
+    <string name="native_id">ca-app-pub-4380652956129533/6442681623</string>
+    <string name="interstitial">ca-app-pub-4380652956129533/9041441724</string>
+    <string name="interstitial2">ca-app-pub-4380652956129533/9582994050</string>
     <string name="info_o_e_m_s">Note: some device manufacturers disabled the ability to enable dark
         mode in their versions of Android, or provide their own toggle</string>
     <string name="info_d_e_v_s">Note: only apps that have been updated by their developers to add a

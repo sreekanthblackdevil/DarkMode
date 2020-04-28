@@ -1,6 +1,7 @@
 package com.nightcoder.darkmode;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
@@ -36,7 +37,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.VideoOptions;
@@ -45,19 +45,20 @@ import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
+import java.io.Serializable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 
-public class BaseActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class BaseActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, Serializable {
 
     private RadioGroup radioGroup;
     private UiModeManager uiModeManager;
     private SharedPreferences sharedPreferences;
-    private InterstitialAd interstitialAd;
     private UnifiedNativeAd nativeAd;
+    protected Background myApp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         uiModeManager = ContextCompat.getSystemService(this, UiModeManager.class);
         radioGroup = findViewById(R.id.radioGroup);
-
+        myApp = (Background) this.getApplicationContext();
         MobileAds.initialize(this, initializationStatus -> {
         });
 
@@ -116,11 +117,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         }
 
         sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getResources().getString(R.string.interstitial));
-        int random = ThreadLocalRandom.current().nextInt(0, 4);
-        if (random == 2)
-            interstitialAd.loadAd(new AdRequest.Builder().build());
+
         refreshAd();
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -147,9 +144,14 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        myApp.setCurrentActivity(this);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        interstitialAd.setAdListener(null);
         Log.d("Status", "Paused");
     }
 
@@ -291,6 +293,7 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         if (nativeAd != null)
             nativeAd.destroy();
         super.onDestroy();
+        clearReference();
         Log.d("Status", "Destroy");
     }
 
@@ -316,8 +319,8 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
     @Override
     public void onBackPressed() {
         int random = ThreadLocalRandom.current().nextInt(0, 3);
-        if (interstitialAd.isLoaded()) {
-            interstitialAd.show();
+        if (myApp.adLoaded()) {
+            myApp.showAd();
         } else if (sharedPreferences.getBoolean("rate", false)) {
             super.onBackPressed();
         } else if (random == 1){
@@ -333,7 +336,10 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
             Button later = dialog.findViewById(R.id.button_later);
             Button rate = dialog.findViewById(R.id.rate_button);
             RatingBar ratingBar = dialog.findViewById(R.id.rating);
-            later.setOnClickListener(v -> super.onBackPressed());
+            later.setOnClickListener(v -> {
+                dialog.cancel();
+                super.onBackPressed();
+            });
             rate.setOnClickListener(v -> {
                 rating();
                 dialog.cancel();
@@ -352,7 +358,8 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
     private void rating() {
         Uri uri = Uri.parse("market://details?id=" + getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+        goToMarket.addFlags(
+                Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         SharedPreferences.Editor editor;
@@ -397,5 +404,12 @@ public class BaseActivity extends AppCompatActivity implements RadioGroup.OnChec
         super.onConfigurationChanged(newConfig);
         updateRadioGroup();
         recreate();
+    }
+
+    private void clearReference() {
+        Activity activity = myApp.getCurrentActivity();
+        if (this.equals(activity)) {
+            myApp.setCurrentActivity(this);
+        }
     }
 }
